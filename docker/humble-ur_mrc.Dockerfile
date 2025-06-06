@@ -11,7 +11,7 @@ WORKDIR ${HOME}
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Basic setup
-RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends --allow-unauthenticated \
+RUN sudo apt-get update && sudo apt-get dist-upgrade && sudo apt-get install -y --no-install-recommends --allow-unauthenticated \
     autoconf \
     automake \
     bash-completion \
@@ -133,7 +133,7 @@ FROM humble-ur_mrc AS humble-ur_ws
 RUN source /opt/ros/humble/setup.bash && \
 	mkdir -p $HOME/${WS_DIR}/src && \
     cd $HOME/${WS_DIR} && \
-	colcon build --symlink-install --executor sequential
+	colcon build --symlink-install
 
 
 # Set up working directory and bashrc

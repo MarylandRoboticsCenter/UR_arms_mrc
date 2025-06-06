@@ -1,19 +1,30 @@
-Docker image for working with UR arms. The image is based on Ubuntu 22.04.
+This repository provides a Docker image for working with Universal Robots (UR) arms. The image is based on Ubuntu 22.04 and preconfigured for development using ROS 2 Humble.
 
-* Build ROS2 humble docker image (run the command from the `docker` folder):
+## Overview
+
+* The container includes two ROS2 workspaces: `ros_ur_driver` and `dev_ws`.
+* `ros_ur_driver` workspace contains UR ROS2 drivers and UR Gazebo simulation packages. Don't use this workspace to add or edit ROS2 packages when running the container since all changes will be temporary. To make permanent changes, modify the Dockerfile and rebuild the image.
+* `dev_ws` is the primary workspace for development when running the docker container. Two folders from the host machine are bind-mounted into the container:
+  * `src` folder in the root of this repository is mounted into the container as `src` folder of `dev_ws` workspace. This allows to edit the code on the host system and compile it inside the container, while ensuring that all changes persist even after the container is stopped.
+  * `config` folder in the root of this repository is mounted into the container as `config` folder of `dev_ws` workspace. This allows to easily edit the configuration parameters without rebuilding thge image or restarting the container.
+
+## Workflow
+* Build Docker image (run the command from the `docker` folder):
     ```
     userid=$(id -u) groupid=$(id -g) docker compose -f humble-ur_mrc-compose.yml build
     ```
-* Start the container:
+* Start the container (run the command from the `docker` folder):
     ```
     docker compose -f humble-ur_mrc-compose.yml run --rm ur_mrc-docker
     ```
-* UR ROS drivers and UR Gazebo simulation package are installed in the `ros_ur_driver` workspace inside the docker container. That workspace should not be used when running the container since all changes will be temporary. To make permanent changes, edit the dockerfile and rebuild the image.
-* `dev_ws` workspace is the main worksapce to work with when running the docker container.
-* Launch `tmux` inside the docker container and create several panes:
-  * `tmux`
-  * `Ctrl+A b`
-  * `Ctrl+A v`
-
+* Once inside the container, use `tmux` to manage multiple panes:
+  * `tmux`      # Start a new session
+  * `Ctrl+A b`  # Split horizontally
+  * `Ctrl+A v`  # Split vertically
+* Use your preferred editor on the host machine to modify source code and config files. 
+* Inside the container:
+  * Compile your packages in `dev_ws` workspace using `colcon build`.
+  * Start ROS2 nodes using `ros2 run ...` or `ros2 launch ...`
+  
 Used resources:
 1. https://github.com/2b-t/docker-for-robotics
