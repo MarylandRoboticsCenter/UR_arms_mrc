@@ -28,3 +28,5 @@ This repository provides a Docker image for working with Universal Robots (UR) a
   
 Used resources:
 1. https://github.com/2b-t/docker-for-robotics
+2. https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver - UR ROS2 official repository
+3. https://docs.universal-robots.com/Universal_Robots_ROS2_Documentation/doc/ur_robot_driver/ur_robot_driver/doc/usage/toc.html - UR ROS2 driver documentation
